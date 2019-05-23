@@ -1,0 +1,26 @@
+syntax = "proto3"; // 指定proto版本
+package hello;     // 指定包名
+
+// 定义S1服务
+service S1 {
+	// 设置了 client stream 代表提供给第三方访问的接口
+	rpc Third(stream HelloRequest) returns (HelloResponse) {}
+	
+	// 设置了 server stream 代表提供给内网访问的接口，例如OM
+	rpc Internal(HelloRequest) returns (stream HelloResponse) {}
+
+	// 没有设置stream 代表提供给APP访问的接口
+	rpc App(HelloRequest) returns (HelloResponse) {}
+
+	rpc Timeout(HelloRequest) returns (HelloResponse) {}
+}
+
+// HelloRequest 请求结构
+message HelloRequest {
+	string name = 4;
+}
+
+// HelloResponse 响应结构
+message HelloResponse {
+    string message = 1;
+}
